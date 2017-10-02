@@ -77,6 +77,11 @@ license and copyright terms herein.
 #include <iostream>
 #include <algorithm>
 
+#ifndef __APPLE__
+#include <limits.h>
+#include <cstring>
+#endif
+
 // #define NEED_DUMP true
 #define MULTI_THREAD true
 /**
