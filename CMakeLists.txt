@@ -54,7 +54,7 @@ if(IS_IOS)
     target_link_libraries(mdlTest mdl-static)
 endif(IS_IOS)
 
-if(UNIX AND NOT APPLE)
+if((UNIX OR MSCV ) AND NOT APPLE)
     add_subdirectory(tools)
     add_definitions(-DMDL_MAC="false")
 elseif(IS_MAC)
