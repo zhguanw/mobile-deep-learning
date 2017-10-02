@@ -63,7 +63,7 @@ MDL theoretically can run on Linux system，The MDL can only run on the MAC now,
 ```
 # mac or linux:
 
-./build.sh mac
+./build.sh mac or ./build.sh linux
 
 cd build/release/x86/build
 
