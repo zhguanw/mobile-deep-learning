@@ -1,22 +1,39 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(mobile-deep-learning)
-include_directories(include /usr/local/include)
 
+if(NOT MSVC)
+include_directories(include /usr/local/include)
+endif(NOT MSVC)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY build)
+set(MDL_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
+if(MSVC)
+    # Add path for custom modules such as pthread library and protoc library
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${MDL_SOURCE_DIR}/cmake")
+    find_package(PTHREAD REQUIRED)
+    find_package(PROTOC REQUIRED)
+
+    if(PTHREAD_FOUND)
+        include_directories(${PTHREAD_INCLUDE_DIR})
+    endif(PTHREAD_FOUND)
+
+    if(PROTOC_FOUND)
+        include_directories(${PROTOC_INCLUDE_DIR})
+    endif(PROTOC_FOUND)
+endif(MSVC)
 
 if(IS_IOS)
-    message(status "Platform is IOS")
+    message(status " Platform is IOS ")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fobjc-abi-version=2 -fobjc-arc -isysroot ${CMAKE_OSX_SYSROOT}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fobjc-abi-version=2 -fobjc-arc -std=gnu++11 -stdlib=libc++ -isysroot ${CMAKE_OSX_SYSROOT}")
 endif(IS_IOS)
 
 if(UNIX AND NOT APPLE)
-    message(status "Platform is Unix or Linux")
+    message(status " Platform is Unix or Linux ")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=gnu++11")
     #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fobjc-abi-version=2 -fobjc-arc")
